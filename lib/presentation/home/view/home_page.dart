@@ -3,11 +3,13 @@ import 'package:aswan/presentation/home/widgets/avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   static Page<void> page() => const MaterialPage<void>(child: HomePage());
+  static PageRoute route() => MaterialPageRoute(builder: (context) {
+        return const HomePage();
+      });
 
   @override
   Widget build(BuildContext context) {

@@ -3,7 +3,6 @@ import 'package:aswan/presentation/home/view/home_page.dart';
 import 'package:aswan/presentation/login/view/login_page.dart';
 import 'package:flutter/widgets.dart';
 
-
 List<Page<dynamic>> onGenerateAppViewPages(
   AppStatus state,
   List<Page<dynamic>> pages,

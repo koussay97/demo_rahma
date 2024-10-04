@@ -12,6 +12,8 @@ class User extends Equatable {
     this.email,
     this.name,
     this.photo,
+    this.accessToken,
+    this.refreshToken,
   });
 
   /// The current user's email address.
@@ -26,9 +28,24 @@ class User extends Equatable {
   /// Url for the current user's photo.
   final String? photo;
 
+  final String? accessToken;
+
+  final String? refreshToken;
+
   /// Empty user which represents an unauthenticated user.
   static const empty = User(id: '');
 
   @override
   List<Object?> get props => [email, id, name, photo];
+
+  factory User.fromJson({required Map<String, dynamic> json}) {
+    return User(
+      id: json['id'],
+      email: json['email'],
+      name: json['name'],
+      photo: json['photo'],
+      accessToken: json['access_token'],
+      refreshToken: json['refresh_token'],
+    );
+  }
 }

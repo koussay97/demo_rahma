@@ -179,6 +179,14 @@ class AuthenticationRepository {
   /// the authentication state changes.
   ///
   /// Emits [User.empty] if the user is not authenticated.
+  Stream<User?> get user2 {
+    return getCurrent.map((user) {
+      final u = user == null ? User.empty : user;
+      _cache.write(key: userCacheKey, value: u);
+      return user;
+    });
+  }
+
   Stream<User> get user {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {
       final user = firebaseUser == null ? User.empty : firebaseUser.toUser;
@@ -270,6 +278,30 @@ class AuthenticationRepository {
     } catch (_) {
       throw LogOutFailure();
     }
+  }
+
+  late StreamController<User?>? _userController;
+
+  StreamController<User?> get userStream {
+    if (_userController != null) {
+      if (_userController!.isClosed || _userController!.isPaused) {
+        _userController!.close();
+        return StreamController<User>.broadcast();
+      }
+      return _userController!;
+    }
+
+    return StreamController<User>.broadcast();
+  }
+
+  Function(User?) get changeStatus => userStream.add;
+
+  Stream<User?> get getCurrent {
+    if (userStream.stream.last is! User) {
+      userStream.addError(Error());
+    }
+    print('user stream has error');
+    return userStream.stream;
   }
 }
 

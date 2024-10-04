@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:aswan/app/app.dart';
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
@@ -7,6 +9,8 @@ void main() => runApp(const VideoPlayerApp());
 
 class VideoPlayerApp extends StatelessWidget {
   const VideoPlayerApp({super.key});
+
+  static Page<void> page() => const MaterialPage<void>(child: VideoPlayerApp());
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +46,14 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     _controller.play();
     _controller.addListener(() {
       if (_controller.value.isCompleted) {
-        setState(() {
-          print("object");
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
+          await Navigator.of(context)
+
+              /// to impelement this
+              /// todo ::
+              .pushReplacement(App.route(
+                  authRepo: AuthServerRepository(
+                      client: CacheClient(), networkChecker: networkChecker)));
         });
       }
     });

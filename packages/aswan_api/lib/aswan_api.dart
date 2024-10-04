@@ -1,5 +1,3 @@
-library aswan_api;
-
 import 'dart:convert';
 
 import 'package:dio/dio.dart';

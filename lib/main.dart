@@ -1,23 +1,33 @@
+import 'package:aswan/app/bloc_observer.dart';
 import 'package:aswan/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc_observer.dart';
 import 'presentation/splash_screen/splash_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  Bloc.observer = const AppBlocObserver(); 
-  runApp(const MyApp());
+
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  final navigator = Navigator(
+    key: navigatorKey,
+    pages: [VideoPlayerApp.page()],
+  );
+  Bloc.observer =
+      AppBlocObserver(navigator: navigator, navigationKey: navigatorKey);
+  runApp(MyApp(
+    navigatorKey: navigatorKey,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+  final GlobalKey<NavigatorState> navigatorKey;
+  const MyApp({super.key, required this.navigatorKey});
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       title: 'Flutter Demo',
       theme: theme,
       builder: (context, child) {

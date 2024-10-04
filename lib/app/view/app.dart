@@ -5,14 +5,20 @@ import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class App extends StatelessWidget {
   const App({
-    required AuthenticationRepository authenticationRepository,
+    required IAuthenticationRepository authenticationRepository,
     super.key,
   }) : _authenticationRepository = authenticationRepository;
 
-  final AuthenticationRepository _authenticationRepository;
+  final IAuthenticationRepository _authenticationRepository;
+
+  static Route<void> route({required IAuthenticationRepository authRepo}) {
+    return MaterialPageRoute<void>(
+        builder: (_) => App(
+              authenticationRepository: authRepo,
+            ));
+  }
 
   @override
   Widget build(BuildContext context) {
